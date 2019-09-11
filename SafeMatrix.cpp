@@ -85,3 +85,60 @@ ostream& operator<<(ostream& os, SA<t> s){
 		cout<<s.p[i]<<endl; 
 	return os;
 };
+
+
+template<typename t>
+class SafeMatrix{
+
+private:
+	int low_r;
+	int low_c;
+	int high_r;
+	int high_c;
+	SA<SA<t>> *matrix;
+
+public:
+	//default constructor
+	SafeMatrix(){
+		low_r=0;
+		low_c=0;
+		high_r=0;
+		high_c=0;
+		matrix = null;
+	}	
+	
+	//4 argument constructor
+	SafeMatrix(int a,int b,int c, int d){
+		low_r=a;
+		high_r=b;
+		low_c=c;
+		high_c=d;
+		matrix= new SA<SA<t>>(low_r,high_r);
+		for(int i=low_r;i<high_r+1);i++){
+			matrix[i]=SA<t>(low_c,high_c);
+		}
+	
+	}
+
+	//two argument constructor
+	SafeMatrix(int a, int b){
+		low_r=a;
+		low_c=a;
+		high_r=b;
+		high_c=b;
+		matrix= new SA<SA<T>>(low_r,high_r);
+		for(int i=low_r;i<high_r+1;i++){
+			matrix[i]= SA<T>(low_c,high_c);
+		}
+	}
+	
+	//copy constructor 
+	SafeMatrix(SafeMatrix<t> & temp){
+		this.low_r=temp.low_r;
+		this.low_c=temp.low_c;
+		this.high_r=temp.high_r;
+		this.high_c=temp.high_c;
+				
+	}
+}
+
