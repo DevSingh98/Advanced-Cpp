@@ -3,8 +3,7 @@
 //Advanced oop c++ Dr. Waxman
 
 #include<iostream>
-#include<cstdlib> 
-#include<cassert> 
+#include<cstdlib>
 using namespace std; 
 
 template<typename t>
