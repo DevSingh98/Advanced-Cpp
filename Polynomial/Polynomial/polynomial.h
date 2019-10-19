@@ -25,11 +25,13 @@ public:
     node* getTail();
     int getSize();
     void setSize(int x);
+    void copy(polynomial &x);
     void insert(node &x);
     void print()const;
     polynomial& operator=(polynomial &x);
-    friend const polynomial& operator+(polynomial &x,polynomial &y);
-    polynomial& operator-(polynomial &x);
+    friend polynomial& operator+(polynomial &x,polynomial &y);
+    friend polynomial& operator-(polynomial &x, polynomial &y);
+    friend polynomial& operator*(polynomial &x, polynomial &y);
 };
 
 #endif /* polynomial_h */

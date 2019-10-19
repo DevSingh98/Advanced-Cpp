@@ -66,7 +66,14 @@ int node::getCoe(){
 }
 
 int node::getExp(){
-    return this->exp;
+    
+    if(this->exp == NULL){
+        return 0;
+    }
+    
+    else{
+        return this->exp;
+    }
 }
 
 node* node::getNext(){
@@ -78,7 +85,7 @@ node* node::getNext(){
 node& node::operator=(node &x){
         this->coe = x.coe;
         this->exp = x.exp;
-        //this->next = x.next;
+        this->next = x.next;
     return *this;
 }
 
