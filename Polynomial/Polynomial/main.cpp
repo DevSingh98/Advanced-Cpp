@@ -13,100 +13,127 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
+    polynomial one ;
+    polynomial two;
     
-    ifstream file("input");
-    if(file.is_open()){
-        string last;
-        while(!file.eof()){
-            
-            file >> last;
+    ifstream file("input.txt");
+    ofstream out("output.txt");
+        
+    while(!file.eof()){
+        string p1;
+        string p2;
+        getline(file, p1);
+        getline(file, p2);
+        if(p1=="" || p2 == "") {
+            break;
         }
-    }
-    
-    ifstream myfileRead;
-      
-      unsigned int last;
-      myfileRead.open("primes.txt");
-      while(!myfileRead.eof()){
-          myfileRead >> last;
-      }
-      myfileRead.close();
-      cout<<endl<<last<<endl;
-    
-    node x = node();
-    x.setExp(3);
-    x.setCoe(8);
-    
-    
-    node y = node();
-    y.setExp(3);
-    y.setCoe(4);
-    
-    node z = node();
-    z.setExp(4);
-    z.setCoe(8);
-    
-    node a = node();
-    a.setExp(2);
-    a.setCoe(2);
-    
-    node b = node();
-    b.setExp(6);
-    b.setCoe(5);
-    
-    node e = node();
-    e.setExp(3);
-    e.setCoe(9);
-    
-    node j = node();
-    j.setExp(5);
-    j.setCoe(9);
+        
+        polynomial one = polynomial(p1);
+        polynomial two = polynomial(p2);
      
-    
-    polynomial one = polynomial();
-    one.insert(x);
-    one.insert(y);
-    
-    polynomial two = polynomial();
-    two.insert(z);
-    two.insert(a);
-    
-    one.print();
-    two.print();
-    
-    polynomial mul = one*two;
-    mul.print();
-    /*
-    two.insert(b);
-    //two.print();
-    
-    two.insert(e);
-    //two.print();
-    
-    two.insert(j);
-    //two.print();
-    
-    two.print();
-    */
-    
-    //polynomial sum = two+one;
-    
-   // sum.print();
-    
-    //polynomial sum2 = (two-one);
-    
-    //sum2.print();
-    
-    /*
-    ofstream myfile("primes.txt");
-       if(myfile.is_open()){
-           for(unsigned int i =0; i<sizeOfOrder;i++){
-               myfile<<orderedPrimes.back();
-               myfile<< endl;
-               orderedPrimes.pop_back();
-           }
-           myfile.close();
-       }
-     */
+        out<< "Input: "<< endl << "p1: ";
+        
+        node *temp = one.getHead();
+        int count = 1;
+        while (count<=one.getSize()) {
+            if(count ==1 && temp->getCoe() != 0){
+                out << (temp->getCoe()) << "x^"<< (temp->getExp());
+            }
+            
+            else if(temp->getCoe() > 0){
+                out<< "+"<< (temp->getCoe()) << "x^"<< (temp->getExp());
+            }
+            else if(temp->getCoe() < 0){
+                out<< (temp->getCoe()) << "x^"<< (temp->getExp());
+            }
+            if( count != one.getSize())
+            temp = temp->getNext();
+            count++;
+        }
+        out<<std::endl;
+        out<< "p2: ";
+        node *temp2 = two.getHead();
+        int count2 = 1;
+        while (count2<=two.getSize()) {
+            if(count2 ==1 && temp2->getCoe() != 0){
+                out << (temp2->getCoe()) << "x^"<< (temp2->getExp());
+            }
+            else if(temp2->getCoe() > 0){
+                out<< "+"<< (temp2->getCoe()) << "x^"<< (temp2->getExp());
+            }
+            else if(temp2->getCoe() < 0){
+                out<< (temp2->getCoe()) << "x^"<< (temp2->getExp());
+            }
+            if( count2 != two.getSize())
+                temp2 = temp2->getNext();
+                count2++;
+            }
+        out<<std::endl;
+        
+        
+        out<< "Sum: ";
+        polynomial sum = one+two;
+        int count3 = 1;
+        node *temp3 = sum.getHead();
+        while (count3<=sum.getSize()) {
+            if(count3 ==1 && temp3->getCoe() != 0){
+                out << (temp3->getCoe()) << "x^"<< (temp3->getExp());
+            }
+            
+            else if(temp3->getCoe() > 0){
+                out<< "+"<< (temp3->getCoe()) << "x^"<< (temp3->getExp());
+            }
+            else if(temp3->getCoe() < 0){
+                out<< (temp3->getCoe()) << "x^"<< (temp3->getExp());
+            }
+            if( count3 != sum.getSize())
+            temp3 = temp3->getNext();
+            count3++;
+        }
+        out<<std::endl;
+        
+        out<< "Subtraction: ";
+        polynomial sub = one-two;
+        int count4 = 1;
+               node *temp4 = sub.getHead();
+               while (count4<=sub.getSize()) {
+                   if(count4 ==1 && temp4->getCoe() != 0){
+                       out << (temp4->getCoe()) << "x^"<< (temp4->getExp());
+                   }
+                   
+                   else if(temp4->getCoe() > 0){
+                       out<< "+"<< (temp4->getCoe()) << "x^"<< (temp4->getExp());
+                   }
+                   else if(temp4->getCoe() < 0){
+                       out<< (temp4->getCoe()) << "x^"<< (temp4->getExp());
+                   }
+                   if( count4 != sub.getSize())
+                   temp4 = temp4->getNext();
+                   count4++;
+               }
+        out<<std::endl;
+        
+        out<< "Multiplication: ";
+        polynomial mul = one*two;
+        int count5 = 1;
+        node *temp5 = mul.getHead();
+        while (count5<=mul.getSize()) {
+            if(count5 ==1 && temp5->getCoe() != 0){
+                out << (temp5->getCoe()) << "x^"<< (temp5->getExp());
+            }
+            else if(temp5->getCoe() > 0){
+                out<< "+"<< (temp5->getCoe()) << "x^"<< (temp5->getExp());
+            }
+            else if(temp5->getCoe() < 0){
+                out<< (temp5->getCoe()) << "x^"<< (temp5->getExp());
+            }
+            if( count5 != mul.getSize())
+                temp5 = temp5->getNext();
+                count5++;
+            }
+        out<<std::endl;
+        
+    }
+
     return 0;
 }

@@ -38,7 +38,7 @@ node::node(int x, int y,node &p){//three argument constructor
 node::node(const node &x){//copy constructor
     coe = x.coe;
     exp = x.exp;
-    next = x.next;
+    //next = x.next;
 }
 
 node::~node(){//deconstructor

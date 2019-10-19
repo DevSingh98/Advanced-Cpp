@@ -10,6 +10,7 @@
 
 #define polynomial_h
 #include "node.h"
+#include <iostream>
 
 class polynomial{
 private:
@@ -28,6 +29,8 @@ public:
     void copy(polynomial &x);
     void insert(node &x);
     void print()const;
+    void print(std::string s);
+    polynomial(std::string p1);
     polynomial& operator=(polynomial &x);
     friend polynomial& operator+(polynomial &x,polynomial &y);
     friend polynomial& operator-(polynomial &x, polynomial &y);

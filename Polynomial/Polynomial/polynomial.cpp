@@ -8,6 +8,7 @@
 
 #include "polynomial.h"
 #include <iostream>
+using namespace std;
 polynomial::polynomial(){
     head = nullptr;
     tail = nullptr;
@@ -53,10 +54,12 @@ int polynomial::getSize(){
 }
 
 void polynomial::insert(node &x){
-    
+    node *temp = new node();
+    temp->setCoe(x.getCoe());
+    temp->setExp(x.getExp());
     if(this->size ==0){ //empty
-        this->head = &x;
-        this->tail = &x;
+        this->head = temp;
+        this->tail = temp;
         this->size++;
     }
     else if(this->size ==1){ //one term
@@ -64,12 +67,12 @@ void polynomial::insert(node &x){
             (*(this->tail)).setCoe((*(this->tail)).getCoe() + x.getCoe());
         }
         else if((*(this->tail)).getExp() < x.getExp()){
-            head = &x;
-            x.setNext(this->tail);
+            head = temp;
+            temp->setNext(this->tail);
             this->size++;
         }
         else{
-            tail = &x;
+            tail = temp;
             (*(this->head)).setNext(tail);
             this->size++;
         }
@@ -79,15 +82,15 @@ void polynomial::insert(node &x){
             (*(this->tail)).setCoe((*(this->tail)).getCoe() + x.getCoe());
         }
         else if((*(this->tail)).getExp() > x.getExp()){//tail is bigger then incoming
-            (*(this->tail)).setNext(&x);
-            tail = &x;
+            (*(this->tail)).setNext(temp);
+            tail = temp;
             this->size++;
          }
         
          else if( (*(this->tail)).getExp() < x.getExp() &&
              (*(this->head)).getExp() > x.getExp() ){//if tail is smaller but head is larger
-             ((*this->head)).setNext(&x);
-             x.setNext(tail);
+             ((*this->head)).setNext(temp);
+             temp->setNext(tail);
              this->size++;
          }
         
@@ -95,8 +98,8 @@ void polynomial::insert(node &x){
              (*(this->head)).setCoe((*(this->head)).getCoe() + x.getCoe());
          }
          else if((*(this->head)).getExp() < x.getExp()){
-             x.setNext(this->head);
-             head = &x;
+             temp->setNext(this->head);
+             head = temp;
              this->size++;
          }
     }
@@ -107,14 +110,14 @@ void polynomial::insert(node &x){
         //pointer starts at the head
         
         if((*pointer).getExp()< x.getExp()){ //if input is biggest term
-                       x.setNext(this->head);
-                       head = &x;
+            temp->setNext(this->head);
+            head = temp;
             this->size++;
         }
         
         else if((*(this->tail)).getExp() > x.getExp()){//tail is bigger then incoming
-           (*(this->tail)).setNext(&x);
-           tail = &x;
+           (*(this->tail)).setNext(temp);
+           tail = temp;
            this->size++;
         }
         
@@ -125,13 +128,13 @@ void polynomial::insert(node &x){
                     break;
                 }
                 else if(((*pointer).getExp() > x.getExp()) && ((*(pointer->getNext())).getExp() < x.getExp())){
-                    x.setNext((pointer->getNext()));
-                    pointer->setNext(&x);
+                    temp->setNext((pointer->getNext()));
+                    pointer->setNext(temp);
                     this->size++;
                     break;
                 }
                 else{
-                    pointer=  (*pointer).getNext();
+                    pointer =  (*pointer).getNext();
                     count++;
                     
                 }
@@ -140,6 +143,57 @@ void polynomial::insert(node &x){
     }
 }
 
+
+
+polynomial::polynomial(std::string p1){
+    int size1 = p1.length();
+    int count =0;
+    bool iscoe = true;
+    int coe;
+    int exp;
+    bool pair =false;
+    while(count < size1){
+        if(p1[count] != ' '){
+            if(iscoe==true){
+                if(p1[count]=='-'){
+                    count++;
+                    coe = -(p1[count]%48);
+                    iscoe=false;
+                    count++;
+                }
+                else{
+                    coe = (p1[count]%48);
+                    iscoe=false;
+                    count++;
+                }
+            }
+            else if(iscoe ==false){
+                if(p1[count]=='-'){
+                    count++;
+                    exp = -(p1[count]%48);
+                    iscoe=true;
+                    node *temp = new node();
+                    temp->setCoe(coe);
+                    temp->setExp(exp);
+                    this->insert(*temp);
+                    count++;
+                }
+                else{
+                    exp = (p1[count]%48);
+                    iscoe=true;
+                    count++;
+                    node *temp = new node();
+                    temp->setCoe(coe);
+                    temp->setExp(exp);
+                    this->insert(*temp);
+                }
+            }
+        }
+        else{
+            count++;
+        }
+    }
+};
 
 void polynomial::print() const{
     node *temp = this->head;
@@ -231,37 +285,38 @@ polynomial& operator-(polynomial &x, polynomial &y){
     pointer = x.getHead();
     node *next = new node();
     next = x.getHead();
-       int size = x.getSize();
-       int count =1;
-       
-       while(count < size){
-           next = (*next).getNext();
-           temp->insert(*pointer);
-           pointer = next;
-           count++;
-       }
-        temp->insert(*next);
-       
-       
-       node *pointery = new node();
-       pointery = y.getHead();
-       node *nexty = new node();
-       nexty = y.getHead();
-       int sizey = y.getSize();
-       int county =1;
+    int size = x.getSize();
+    int count =1;
+    while(count < size){
+        next = (*next).getNext();
+        temp->insert(*pointer);
+        pointer = next;
+        count++;
+    }
+    temp->insert(*next);
+    
+    node *pointery = new node();
+    pointery = y.getHead();
+    node *nexty = new node();
+    nexty = y.getHead();
+    int sizey = y.getSize();
+    int county =1;
            
-       while(county < sizey){
-           nexty = (*nexty).getNext();
-           (*pointery).setCoe((*pointery).getCoe()*-1);
-           temp->insert(*pointery);
-           pointery = nexty;
-           county++;
-       }
-        (*nexty).setCoe((*nexty).getCoe()*-1);
-        temp->insert(*nexty);
+    while(county < sizey){
+        node *temp2 = new node();
+        temp2->setExp(pointery->getExp());
+        nexty = (*nexty).getNext();
+        temp2->setCoe((*pointery).getCoe()*-1);
+        temp->insert(*temp2);
+        pointery = nexty;
+        county++;
+    }
+    node *temp3 = new node();
+    (*temp3).setCoe((*nexty).getCoe()*-1);
+    temp->insert(*temp3);
        
 
-       return *temp;
+    return *temp;
 }
 
 
